@@ -110,9 +110,26 @@ jobs:
           lfs: true
 
       - name: Set up Python
+        if: ${{ matrix.platform != 'linux_arm64' }}
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+
+      - name: Use local Python 3.10 on ARM64
+        if: ${{ matrix.platform == 'linux_arm64' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHON_BIN="$(command -v python3.10 || true)"
+          if [ -z "$PYTHON_BIN" ]; then
+            echo "python3.10 not found on PATH" >&2
+            exit 1
+          fi
+          LOCAL_PYTHON_DIR="$RUNNER_TEMP/local-python/bin"
+          mkdir -p "$LOCAL_PYTHON_DIR"
+          ln -sf "$PYTHON_BIN" "$LOCAL_PYTHON_DIR/python"
+          echo "$LOCAL_PYTHON_DIR" >> "$GITHUB_PATH"
+          python --version
 
       - name: Configure examples build on Linux
         if: runner.os != 'Windows'
@@ -210,7 +227,7 @@ jobs:
         with:
           pattern: examples-results-*
           path: all_examples_results
-          merge-multiple: true
+          merge-multiple: false
 
       - name: Merge reports
         shell: bash
@@ -237,7 +254,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: examples-aggregate-${{ github.run_id }}
-          path: reports/examples/aggregate/*
+          path: reports/examples/aggregate/**
           retention-days: 30
 
       - name: Summarize aggregate result

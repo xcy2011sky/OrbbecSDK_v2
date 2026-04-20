@@ -63,7 +63,6 @@ static void        printDeviceList(const std::vector<std::shared_ptr<ob::Device>
 static void        firmwareUpdateCallback(UpdateState &state, OBFwUpdateState cbState, const char *message, uint8_t percent);
 static bool        updateSingleDevice(std::shared_ptr<ob::Device> device, const std::string &firmwarePath, UpdateState &state);
 static bool        waitForDeviceReboot(std::shared_ptr<ob::Context> context, const std::string &serial, std::shared_ptr<ob::Device> &outDevice);
-static std::string connectionTypeStr(const char *ct);
 
 // ============================================================
 // Detect ANSI escape support (simplified)

@@ -8,6 +8,27 @@
 #include <ctype.h>
 #include <string.h>
 
+#if defined(__linux__) || defined(__APPLE__)
+#include <strings.h>
+
+static int ob_smpl_stricmp(const char *lhs, const char *rhs) {
+    while(*lhs != '\0' && *rhs != '\0') {
+        int diff = tolower((unsigned char)*lhs) - tolower((unsigned char)*rhs);
+        if(diff != 0) {
+            return diff;
+        }
+        lhs++;
+        rhs++;
+    }
+    return tolower((unsigned char)*lhs) - tolower((unsigned char)*rhs);
+}
+
+#undef _stricmp
+#undef _strnicmp
+#define _stricmp ob_smpl_stricmp
+#define _strnicmp strncasecmp
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -165,23 +186,6 @@ char ob_smpl_test_poll_auto_key(void) {
 #include <fcntl.h>
 
 #define gets_s gets
-
-static int ob_smpl_stricmp(const char *lhs, const char *rhs) {
-    while(*lhs != '\0' && *rhs != '\0') {
-        int diff = tolower((unsigned char)*lhs) - tolower((unsigned char)*rhs);
-        if(diff != 0) {
-            return diff;
-        }
-        lhs++;
-        rhs++;
-    }
-    return tolower((unsigned char)*lhs) - tolower((unsigned char)*rhs);
-}
-
-#undef _stricmp
-#undef _strnicmp
-#define _stricmp ob_smpl_stricmp
-#define _strnicmp strncasecmp
 
 int getch(void) {
     struct termios tm, tm_old;

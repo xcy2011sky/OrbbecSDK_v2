@@ -30,10 +30,10 @@ int main(void) try {
 
     // Create a window for rendering with overlay mode.
     ob_smpl::CVWindow win("RGBD Viewer", 1280, 720, ob_smpl::ARRANGE_OVERLAY);
-    uint32_t          overlaySaveIndex = 0;
     std::shared_ptr<ob::FrameSet> latestAlignedFrameSet;
 
 #ifdef OB_HAVE_OPENCV
+    uint32_t overlaySaveIndex = 0;
     win.setKeyPressedCallback([&](int key) {
         if(key != 's' && key != 'S') {
             return;

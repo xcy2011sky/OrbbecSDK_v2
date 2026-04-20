@@ -6,6 +6,7 @@
       "runs_on": [
         "self-hosted",
         "linux",
+        "x64",
         "sdk",
         "usb",
         "gemini-330"
@@ -44,6 +45,7 @@
       "runs_on": [
         "self-hosted",
         "windows",
+        "x64",
         "sdk",
         "usb",
         "gemini-330"
@@ -153,7 +155,7 @@
       "runs_on": [
         "self-hosted",
         "linux",
-        "x86_64",
+        "x64",
         "sdk",
         "usb",
         "gemini-2"
@@ -215,6 +217,7 @@
       "runs_on": [
         "self-hosted",
         "linux",
+        "x64",
         "sdk",
         "usb",
         "femto-bolt",
@@ -244,6 +247,7 @@
       "runs_on": [
         "self-hosted",
         "windows",
+        "x64",
         "sdk",
         "usb",
         "femto-bolt",
@@ -274,6 +278,7 @@
       "runs_on": [
         "self-hosted",
         "linux",
+        "x64",
         "sdk",
         "lidar"
       ],
@@ -298,6 +303,7 @@
       "runs_on": [
         "self-hosted",
         "linux",
+        "x64",
         "sdk",
         "usb",
         "multi-device",

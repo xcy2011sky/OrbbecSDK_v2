@@ -74,14 +74,17 @@ int main(void) try {
     postLeftInfraredFilter->setConfigValue("sequenceid", -1);
     postRightInfraredFilter->setConfigValue("sequenceid", -1);
 
-    auto inputWatchThread = std::thread(inputWatcher);
-    inputWatchThread.detach();
-
     // Create a window for rendering and set the resolution of the window
 
     // create window for render
     win = std::make_shared<ob_smpl::CVWindow>("Laser On-Off", 1280, 720, ob_smpl::ARRANGE_GRID);
     win->setKeyPrompt("'Esc': Exit");
+
+    if(!ob_smpl::testModeEnabled()) {
+        auto inputWatchThread = std::thread(inputWatcher);
+        inputWatchThread.detach();
+    }
+
     while(win->run()) {
         auto frameSet = pipe.waitForFrameset(100);
         if(frameSet == nullptr) {
@@ -125,6 +128,11 @@ int main(void) try {
         }
     }
 
+    if(win) {
+        win->close();
+        win.reset();
+    }
+
     postDepthFilter.reset();
     postLeftInfraredFilter.reset();
     postRightInfraredFilter.reset();
@@ -165,7 +173,9 @@ void inputWatcher() {
         printCommandTips();
         std::getline(std::cin, cmd);
         if(cmd == "quit" || cmd == "q") {
-            win->close();
+            if(win) {
+                win->close();
+            }
             break;
         }
         else {

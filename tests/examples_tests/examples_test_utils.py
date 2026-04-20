@@ -498,13 +498,21 @@ def render_html_report(results: Sequence[Dict[str, Any]], output_path: Path, tit
         if result.get("saved_images"):
             parts = []
             for image_path in result["saved_images"]:
-                rel_path = os.path.relpath(image_path, output_path.parent).replace("\\", "/")
+                image_ref = Path(image_path)
+                if image_ref.is_absolute():
+                    rel_path = os.path.relpath(image_path, output_path.parent).replace("\\", "/")
+                else:
+                    rel_path = image_ref.as_posix()
                 parts.append(f'<a href="{html.escape(rel_path)}"><img src="{html.escape(rel_path)}" alt="{html.escape(Path(image_path).name)}"></a>')
             images_html = "".join(parts)
 
         log_html = "-"
         if result.get("log_path"):
-            rel_log = os.path.relpath(result["log_path"], output_path.parent).replace("\\", "/")
+            log_ref = Path(result["log_path"])
+            if log_ref.is_absolute():
+                rel_log = os.path.relpath(result["log_path"], output_path.parent).replace("\\", "/")
+            else:
+                rel_log = log_ref.as_posix()
             log_html = f'<a href="{html.escape(rel_log)}">log</a>'
 
         rows.append(

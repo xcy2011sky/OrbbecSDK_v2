@@ -158,7 +158,8 @@ cv::Mat convertColorFrameToBGR(std::shared_ptr<const ob::Frame> colorFrame) {
 
 static std::string replaceExtension(const std::string &path, const std::string &newExt) {
     auto dot = path.rfind('.');
-    if(dot != std::string::npos) {
+    auto slash = path.find_last_of("\\/");
+    if(dot != std::string::npos && (slash == std::string::npos || dot > slash)) {
         return path.substr(0, dot) + newExt;
     }
     return path + newExt;
@@ -182,10 +183,11 @@ CVWindow::CVWindow(std::string name, uint32_t width, uint32_t height, ArrangeMod
       closed_(false),
       showInfo_(true),
       showSyncTimeInfo_(false),
-      isWindowDestroyed_(false),
       alpha_(0.6f),
+      logCreatedTime_(0),
       autoSaveEnabled_(true),
       saveIndex_(0),
+      isWindowDestroyed_(false),
       showPrompt_(false) {
 
 #if defined(TO_DISABLE_OPENCV_LOG)

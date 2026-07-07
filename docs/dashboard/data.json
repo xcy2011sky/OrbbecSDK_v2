@@ -1,7 +1,7 @@
 [
   {
-    "timestamp": "2026-07-07T16:55:38.678055+00:00",
-    "workflow": "PR Gate",
+    "timestamp": "2026-07-07T18:41:08.090707+00:00",
+    "workflow": "Nightly Regression",
     "total_cases": 1,
     "passed_cases": 0,
     "failed_cases": 1,
